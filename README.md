@@ -42,13 +42,27 @@ Signal handling is implemented using the sigaction system call to ensure reliabl
 
 ## Installation
 
-Start the server:
+1. **Clone the repository to your local machine:**
+	```sh
+	git clone git@github.com:casomarr/42-Minitalk.git
+	```
+
+2. **Navigate to the project directory:**
+	```sh
+	cd 42-Minitalk
+	```
+
+3. **Compile the project:**
+	```sh
+   make
+
+4. **Start the server:**
 ```sh
 ./server  
 ```
 The server will display its PID, which is needed for the client to connect.
 
-Use the client to send a message to the server:
+5. **Use the client to send a message to the server:**
 ```sh
 ./client <server_PID> <message>  
 ```
