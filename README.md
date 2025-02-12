@@ -12,11 +12,23 @@ Create a simplified client-server communication system using signals (SIGUSR1 an
 - Signal Handling: Uses SIGUSR1 and SIGUSR2 to represent binary data (1 and 0).
 
 ## Implementation Details
-While the project is intended to teach bit shifting for encoding and decoding messages, I implemented it differently at the time. Instead of using bit shifting, I:
+While the project is intended to teach bit shifting for encoding and decoding messages, I implemented it differently at the time. 
+The project consists of two programs: a client and a server.
 
-1. Encoded Bits: Used a static array of binary weights (128, 64, 32, etc.) to convert each character into its 8-bit binary representation.
-2. Decoded Bits: Reconstructed the character by summing the weighted bits received from the client.
-3. Signal Communication: Sent each bit using kill() and SIGUSR1/SIGUSR2, with the server signaling readiness for the next bit.
+- Client:
+    - Sends a message character by character to the server.
+    - Each character is broken down into its 8-bit binary representation using a static array of binary weights (128, 64, 32, etc.).
+    - Each bit is sent to the server as a signal (SIGUSR1 for 1 and SIGUSR2 for 0).
+    - Waits for the server to acknowledge receipt of each bit (SIGUSR1) before sending the next one.
+
+- Server:
+    - Listens for incoming signals from the client.
+    - Accumulates 8 bits to reconstruct each character using a reverse lookup of binary weights.
+    - Once a full character is received, it is appended to the message.
+    - Signals the client when it is ready to receive the next bit (SIGUSR1).
+    - Prints the complete message when the null terminator (\0) is received.
+  
+Signal handling is implemented using the sigaction system call to ensure reliable communication between processes.
 
 ## Challenges
 - Bit Manipulation: Implementing binary encoding/decoding without bit shifting required careful handling of binary weights.
@@ -27,3 +39,22 @@ While the project is intended to teach bit shifting for encoding and decoding me
 - Signal Handling: Mastering Unix signals and inter-process communication.
 - Binary Data Processing: Understanding how characters are represented and transmitted as binary data.
 - Debugging: Troubleshooting communication issues between processes.
+
+## Installation
+
+Start the server:
+```sh
+./server  
+```
+The server will display its PID, which is needed for the client to connect.
+
+Use the client to send a message to the server:
+```sh
+./client <server_PID> <message>  
+```
+Example:
+```sh
+./client 12345 "Hello, World!"  
+```
+The server will display the received message.
+
