@@ -14,7 +14,7 @@ Create a simplified client-server communication system using signals (SIGUSR1 an
 ## Implementation Details
 While the project is intended to teach bit shifting for encoding and decoding messages, I implemented it differently at the time. Instead of using bit shifting, I:
 
-1. Encoded Bits: Used logical operations (&, |) and a static array of binary weights (128, 64, 32, etc.) to convert each character into its 8-bit binary representation.
+1. Encoded Bits: Used a static array of binary weights (128, 64, 32, etc.) to convert each character into its 8-bit binary representation.
 2. Decoded Bits: Reconstructed the character by summing the weighted bits received from the client.
 3. Signal Communication: Sent each bit using kill() and SIGUSR1/SIGUSR2, with the server signaling readiness for the next bit.
 
